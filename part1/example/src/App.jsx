@@ -1,22 +1,12 @@
-const Hello = (props) => {
-  return (
-    <div>
-      <p>
-        Hello {props.name}, you are {props.age} years old
-      </p>
-    </div>
-  );
-};
+import { useState } from "react";
 
 const App = () => {
-  const name = "Peter";
-  const age = 10;
+  const [value, setValue] = useState(10);
+
   return (
     <div>
-      <h1>Greetings</h1>
-
-      <Hello name="George" age={26 + 10} />
-      <Hello name={name} age={age} />
+      {value}
+      <button onClick={() => setValue(0)}>reset to zero</button>
     </div>
   );
 };
