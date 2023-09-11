@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import axiso from "axios";
+import axios from "axios";
 import numbers from "./services/numbers";
 
 import Filter from "./components/Filter";
 import Form from "./components/Form";
 import Numbers from "./components/Numbers";
+import Message from "./components/Message";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,6 +13,8 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState(null);
+  const [messageClass, setMessageClass] = useState("");
 
   useEffect(() => {
     numbers.getAll().then((response) => {
@@ -53,6 +56,12 @@ const App = () => {
         setPersons(persons.concat(response.data));
         setNewName("");
         setNewPhone("");
+        setMessage(`Added ${response.data.name}`);
+        setMessageClass("message");
+        setTimeout(() => {
+          setMessage(null);
+          setMessageClass("");
+        }, 3000);
       });
     }
   };
@@ -63,7 +72,14 @@ const App = () => {
     );
 
     if (confirmation) {
-      numbers.deleteNum(id);
+      numbers.deleteNum(id).catch((error) => {
+        setMessage(`User already deleted`);
+        setMessageClass("error");
+        setTimeout(() => {
+          setMessage(null);
+          setMessageClass(null);
+        }, 3000);
+      });
       setPersons(persons.filter((person) => person.id !== id));
     }
   };
@@ -82,6 +98,7 @@ const App = () => {
 
   return (
     <div>
+      <Message message={message} messageClass={messageClass} />
       <h2>Phonebook</h2>
       <Filter filter={filter} handleFiltering={handleFiltering} />
       <Form

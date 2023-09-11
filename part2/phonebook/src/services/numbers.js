@@ -13,7 +13,6 @@ const createNum = (newEntry) => {
 };
 
 const deleteNum = (id) => {
-  console.log(id);
   const request = axios.delete(`${baseUrl}/${id}`);
   return request;
 };
