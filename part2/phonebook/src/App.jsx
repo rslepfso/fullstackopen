@@ -52,17 +52,27 @@ const App = () => {
         });
       }
     } else {
-      numbers.createNum(newPerson).then((response) => {
-        setPersons(persons.concat(response.data));
-        setNewName("");
-        setNewPhone("");
-        setMessage(`Added ${response.data.name}`);
-        setMessageClass("message");
-        setTimeout(() => {
-          setMessage(null);
-          setMessageClass("");
-        }, 3000);
-      });
+      numbers
+        .createNum(newPerson)
+        .then((response) => {
+          setPersons(persons.concat(response.data));
+          setNewName("");
+          setNewPhone("");
+          setMessage(`Added ${response.data.name}`);
+          setMessageClass("message");
+          setTimeout(() => {
+            setMessage(null);
+            setMessageClass("");
+          }, 3000);
+        })
+        .catch((error) => {
+          setMessage(`${error.response.data.error}`);
+          setMessageClass("error");
+          setTimeout(() => {
+            setMessage(null);
+            setMessageClass("");
+          }, 3000);
+        });
     }
   };
 
